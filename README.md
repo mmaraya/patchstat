@@ -16,7 +16,7 @@ Precompiled binaries can be downloaded from https://github.com/mmaraya/patchstat
 License
 -------
 
-Please see [LICENSE](LICENSE).
+Please see [LICENSE](LICENSE.md).
 
 Issues
 ------
