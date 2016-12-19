@@ -6,7 +6,7 @@ patchstat takes Nessus output files in CSV format from different dates and tells
 Supported Platforms
 -------------------
 
-patchstat should run on any POSIX-compliant operating system.
+patchstat should run on any POSIX-compliant operating system. Binaries are compiled against the target platform to eliminate the need for prerequisites or Internet connectivity.
 
 Download
 --------
