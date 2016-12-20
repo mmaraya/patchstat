@@ -27,7 +27,7 @@ patchstat uses the following third-party libraries:
 
  Catch v1.5.9
  Generated: 2016-11-29 12:14:38.049276
- ----------------------------------------------------------
+ 
  This file has been merged from multiple headers. Please don't edit it directly
  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
 
