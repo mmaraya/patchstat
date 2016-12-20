@@ -33,5 +33,5 @@ patchstat uses the following third-party libraries:
  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
 
  Distributed under the Boost Software License, Version 1.0. (See accompanying
- file [LICENSE\_1\_0.txt](http://www.boost.org/LICENSE_1_0.txt)
+ file [LICENSE\_1\_0.txt](http://www.boost.org/LICENSE_1_0.txt))
 
