@@ -8,8 +8,11 @@
  *
  */
 
-#include <fstream>
-using namespace std;
+#include <iostream>
 
 int main(int argc, char* argv[]) {
+    std::cout << "Reading " << argc - 1 << " files\n";
+    for (int i = 1; i < argc; i++) {
+        std::cout << argv[i] << '\n';
+    }
 }
