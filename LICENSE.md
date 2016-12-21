@@ -22,8 +22,8 @@ SOFTWARE.
 
 patchstat uses the following third-party libraries:
 
-1) License Notice for [Catch](https://github.com/philsquared/Catch)
-===================================================================
+License Notice for [Catch](https://github.com/philsquared/Catch)
+-------------------------------------------------------------------
 
  Catch v1.5.9
  Generated: 2016-11-29 12:14:38.049276
