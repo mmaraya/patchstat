@@ -8,11 +8,16 @@
  *
  */
 
-#include <iostream>
+#include "patchstat/main.hpp"
 
 int main(int argc, char* argv[]) {
     std::cout << "Reading " << argc - 1 << " files\n";
     for (int i = 1; i < argc; i++) {
-        std::cout << argv[i] << '\n';
+        std::ifstream file(argv[i]);
+        CSV row;
+        while(file >> row) {
+            std::cout << row[4] << row[0] << row[3] << '\n';
+        }
     }
+
 }

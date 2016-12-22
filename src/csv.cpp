@@ -8,12 +8,29 @@
  *
  */
 
-#include <iostream>
 #include "patchstat/csv.hpp"
 
-CSV::CSV(std::string in_file, std::string out_file) {
-    in_file_ = in_file;
-    out_file_ = out_file;
+std::size_t CSV::size() const {
+    return data.size();
 }
 
+std::string const &CSV::operator[](std::size_t index) const {
+    return data[index];
+}
 
+void CSV::next(std::istream &str) {
+    std::string line;
+    std::getline(str, line);
+    std::stringstream stream(line);
+    std::string value;
+
+    data.clear();
+    while(std::getline(stream, value, ',')) {
+        data.push_back(value);
+    }
+}
+
+std::istream &operator>>(std::istream &str, CSV& data) {
+    data.next(str);
+    return str;
+}

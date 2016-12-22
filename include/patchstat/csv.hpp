@@ -11,18 +11,20 @@
 #ifndef PATCHSTAT_CSV_H_
 #define PATCHSTAT_CSV_H_
 
+#include <fstream>
+#include <sstream>
 #include <string>
+#include <vector>
 
 class CSV {
   private:
-    std::string in_file_;
-    std::string out_file_;
+    std::vector<std::string> data;
   public:
-    explicit CSV(std::string in_file, std::string out_file);
-    std::string in_file() const;
-    std::string out_file() const;
-    void set_in_file(std::string in_file);
-    void set_out_file(std::string out_file);
+    std::size_t size() const;
+    std::string const &operator[](std::size_t index) const;
+    void next(std::istream &str);
 };
+
+std::istream &operator>>(std::istream &str, CSV &data); 
 
 #endif // PATCHSTAT_CSV_H_
