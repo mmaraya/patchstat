@@ -18,7 +18,7 @@ LIB_FILES :=
 CXX_FLAGS := -g -Wall -std=c++11 -I$(INC_DIR)
 LD_FLAGS  := 
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(BIN_DIR)/$(PROGRAM)
 
@@ -32,3 +32,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 clean:
 	rm -f $(BIN_DIR)/$(PROGRAM) $(OBJ_DIR)/*.o
+
+test: $(BIN_DIR)/$(PROGRAM)
+	$(BIN_DIR)/$(PROGRAM) test/test.csv
+
