@@ -460,11 +460,9 @@ namespace io{
                         }
 
                         int line_end = data_begin;
-                        while(buffer[line_end] != '\n' && buffer[line_end - 1] != '\r' && line_end != data_end){
-                                std::cout << buffer[line_end] << '-'; 
+                        while(buffer[line_end] != '\n' && line_end != data_end){
                                 ++line_end;
                         }
-                        std::cout << std::endl;
 
                         if(line_end - data_begin + 1 > block_len){
                                 error::line_length_limit_exceeded err;
@@ -473,19 +471,18 @@ namespace io{
                                 throw err;
                         }
 
-                        if(buffer[line_end] == '\n' && buffer[line_end - 1] == '\r'){
-                                std::cout << "EOL\n"; 
+                        if(buffer[line_end] == '\n'){
                                 buffer[line_end] = '\0';
-                        }//else{
+                        }else{
                                 // some files are missing the newline at the end of the
                                 // last line
-                         //       ++data_end;
-                         //       buffer[line_end] = '\0';
-                        //}
+                                ++data_end;
+                                buffer[line_end] = '\0';
+                        }
 
                         // handle windows \r\n-line breaks
-                        //if(line_end != data_begin && buffer[line_end-1] == '\r')
-                        //        buffer[line_end-1] = '\0';
+                        if(line_end != data_begin && buffer[line_end-1] == '\r')
+                                buffer[line_end-1] = '\0';
 
                         char*ret = buffer + data_begin;
                         data_begin = line_end+1;
