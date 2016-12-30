@@ -15,6 +15,8 @@ CXX      	= bcc32c.exe
 CXXFLAGS 	= -w -tMC -I$(INC_DIR) -n$(OBJ_DIR) -e$(EXECUTABLE)
 OBJ_FILES 	= $(OBJ_DIR)\main.obj
 EXECUTABLE	= $(BIN_DIR)\$(PROGRAM).exe
+SANDBOX		= "C:\Users\User\Downloads"
+TESTFILE	= test_0.csv
 
 all: clean compile test
 
@@ -26,4 +28,5 @@ clean:
 	@if exist $(OBJ_DIR) del $(OBJ_FILES)
 
 test:
-	$(EXECUTABLE) test\test.csv
+	cp $(EXECUTABLE) $(SANDBOX)
+	$(SANDBOX)\$(PROGRAM).exe $(TESTFILE)
