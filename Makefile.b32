@@ -1,0 +1,29 @@
+#
+# Copyright (c) 2016 Mike Maraya <mike[dot]maraya[at]gmail[dot]com>
+#
+# This file is subject to the terms and conditions defined in
+# https://github.com/mmaraya/patchstat/blob/master/LICENSE,
+# which is part of this software package.
+#
+
+PROGRAM	 	= patchstat
+SRC_DIR  	= src
+OBJ_DIR  	= obj
+BIN_DIR  	= bin
+INC_DIR  	= include
+CXX      	= bcc32c.exe
+CXXFLAGS 	= -w -tMC -I$(INC_DIR) -n$(OBJ_DIR) -e$(EXECUTABLE)
+OBJ_FILES 	= $(OBJ_DIR)\main.obj
+EXECUTABLE	= $(BIN_DIR)\$(PROGRAM).exe
+
+all: clean compile test
+
+compile:
+	$(CXX) $(CXXFLAGS) $(SRC_DIR)\main.cpp
+
+clean:
+	@if exist $(EXECUTABLE) del $(EXECUTABLE)
+	@if exist $(OBJ_DIR) del $(OBJ_FILES)
+
+test:
+	$(EXECUTABLE) test\test.csv
