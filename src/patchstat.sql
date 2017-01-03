@@ -34,3 +34,16 @@ SELECT network.network_name,
    AND network.id = scan.network_id
    AND vulnerability.id = scan_result.vulnerability_id
 
+-- summary report
+SELECT network.network_name,
+       scan.scan_date,
+       vulnerability.severity,
+       count(*)
+  FROM scan_result,
+       scan,
+       network,
+       vulnerability
+ WHERE scan_result.scan_id = scan.id
+   AND network.id = scan.network_id
+   AND vulnerability.id = scan_result.vulnerability_id
+GROUP BY severity

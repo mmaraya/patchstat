@@ -13,7 +13,8 @@
 int main(int argc, char* argv[]) {
     std::cout << "Reading " << argc - 1 << " files\n";
     for (int i = 1; i < argc; i++) {
-        io::CSVReader<3, io::trim_chars<' '>, io::double_quote_escape<',','\"'>> in (argv[i]);
+        std::cout << "argv[" << i << "] = " << argv[i] << std::endl;
+        io::CSVReader<3> in (argv[i]);
         in.read_header(io::ignore_extra_column, "Plugin ID", "Risk", "Host");
         std::string plugin_id;
         std::string risk;
@@ -22,5 +23,8 @@ int main(int argc, char* argv[]) {
             std::cout << plugin_id << '|' << risk << '|' << host << "|\n";
         }  
     }
-
+    std::cout << "Hit enter to continue ...\n"; 
+    std::string input = ""; 
+    getline(std::cin, input);
+    return 0;
 }
