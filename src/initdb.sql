@@ -1,8 +1,11 @@
+-- create tables
 CREATE TABLE "network" ( `id` INTEGER NOT NULL UNIQUE, `network_name` TEXT NOT NULL UNIQUE, PRIMARY KEY(`id`) );
 CREATE TABLE "scan" ( `id` INTEGER NOT NULL UNIQUE, `network_id` INTEGER NOT NULL, `scan_date` TEXT NOT NULL, PRIMARY KEY(`id`) );
 CREATE TABLE "host" ( `id` INTEGER NOT NULL UNIQUE, `ip_address` TEXT NOT NULL UNIQUE, PRIMARY KEY(`id`) );
 CREATE TABLE "vulnerability" ( `id` INTEGER NOT NULL UNIQUE, `severity` TEXT NOT NULL, `cve` TEXT, `cvss` NUMERIC, PRIMARY KEY(`id`) );
 CREATE TABLE "scan_result" ( `scan_id` INTEGER NOT NULL, `host_id` INTEGER NOT NULL, `vulnerability_id` INTEGER NOT NULL, PRIMARY KEY(`scan_id`,`host_id`,`vulnerability_id`) );
+
+-- count all vulnerabilities by severity
 CREATE VIEW vulnerabilities_all AS
     SELECT network_name, severity, vulns FROM
     (
@@ -21,7 +24,8 @@ CREATE VIEW vulnerabilities_all AS
       ORDER BY  network_name, scan_date, severity
     )
     GROUP BY network_name, severity;
--- count all current vulnerabilities by severity
+
+-- count current vulnerabilities by severity
 CREATE VIEW vulnerabilities_current AS
     SELECT  network.network_name
            ,vulnerability.severity
@@ -35,3 +39,11 @@ CREATE VIEW vulnerabilities_current AS
        AND  vulnerability.id = scan_result.vulnerability_id
        AND  scan.id = (SELECT id FROM scan ORDER BY scan_date DESC LIMIT 1)
   GROUP BY network_name, severity;
+
+-- count vulnerabilities remediated by severity
+CREATE VIEW vulnerabilities_remediated AS
+    SELECT  A.network_name AS network
+           ,A.severity
+           ,A.vulns - COALESCE(B.vulns, 0) AS remediated
+      FROM  vulnerabilities_all A LEFT JOIN vulnerabilities_current B 
+        ON (A.network_name = B.network_name AND A.severity = B.severity);
