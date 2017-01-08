@@ -15,6 +15,22 @@ CREATE TABLE "host" ( `id` INTEGER NOT NULL UNIQUE, `ip_address` TEXT NOT NULL U
 CREATE TABLE "vulnerability" ( `id` INTEGER NOT NULL UNIQUE, `severity` TEXT NOT NULL, `cve` TEXT, `cvss` NUMERIC, PRIMARY KEY(`id`) );
 CREATE TABLE "scan_result" ( `scan_id` INTEGER NOT NULL, `host_id` INTEGER NOT NULL, `vulnerability_id` INTEGER NOT NULL, PRIMARY KEY(`scan_id`,`host_id`,`vulnerability_id`) );
 
+-- scan summary
+CREATE VIEW scan_summary AS
+    SELECT  network_name AS network
+           ,scan_date
+           ,severity
+           ,count(*) AS vulns
+      FROM  scan
+           ,scan_result
+           ,network
+           ,vulnerability
+     WHERE  scan_result.scan_id = scan.id
+       AND  network.id = scan.network_id
+       AND  vulnerability.id = scan_result.vulnerability_id
+  GROUP BY  network_name, scan_date, severity
+  ORDER BY  network, scan_date;
+
 -- count all vulnerabilities by severity
 CREATE VIEW vulnerabilities_all AS
     SELECT network_name, severity, vulns FROM

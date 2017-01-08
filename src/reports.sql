@@ -47,3 +47,18 @@ GROUP BY network_name, severity;
          ,A.vulns - COALESCE(B.vulns, 0) AS remediated
     FROM  vulnerabilities_all A LEFT JOIN vulnerabilities_current B 
       ON (A.network_name = B.network_name AND A.severity = B.severity);
+
+-- scan results
+  SELECT  network_name AS network
+         ,scan_date
+         ,severity
+         ,count(*) AS vulns
+    FROM  scan 
+         ,scan_result
+         ,network
+         ,vulnerability
+   WHERE  scan_result.scan_id = scan.id
+     AND  network.id = scan.network_id
+     AND  vulnerability.id = scan_result.vulnerability_id
+GROUP BY  network_name, scan_date, severity;
+
