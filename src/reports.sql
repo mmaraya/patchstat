@@ -1,4 +1,14 @@
--- count all current and past vulnerabilities by severity
+/*
+ * Copyright (c) 2016 Mike Maraya <mike[dot]maraya[at]gmail[dot]com>
+ * All rights reserved.
+ *
+ * This file is subject to the terms and conditions defined in
+ * https://github.com/mmaraya/patchstat/blob/master/LICENSE,
+ * which is part of this software package.
+ *
+ */
+
+-- count all vulnerabilities by severity
 SELECT network_name, severity, vulns FROM
 (
     SELECT  network.network_name AS network
@@ -17,7 +27,7 @@ SELECT network_name, severity, vulns FROM
 )
 GROUP BY network_name, severity;
 
--- count all current vulnerabilities by severity
+-- count current vulnerabilities by severity
   SELECT  network.network_name AS network
          ,vulnerability.severity
          ,count(*) AS vulns
@@ -31,7 +41,7 @@ GROUP BY network_name, severity;
      AND  scan.id = (SELECT id FROM scan ORDER BY scan_date DESC LIMIT 1)
 GROUP BY network_name, severity;
 
--- count all vulnerabilities remediated by severity
+-- count remediated vulnerabilities by severity
   SELECT  A.network_name AS network
          ,A.severity
          ,A.vulns - COALESCE(B.vulns, 0) AS remediated

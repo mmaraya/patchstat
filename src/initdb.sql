@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2017 Mike Maraya <mike[dot]maraya[at]gmail[dot]com>
+ * All rights reserved.
+ *
+ * This file is subject to the terms and conditions defined in
+ * https://github.com/mmaraya/patchstat/blob/master/LICENSE,
+ * which is part of this software package.
+ *
+ */
+
 -- create tables
 CREATE TABLE "network" ( `id` INTEGER NOT NULL UNIQUE, `network_name` TEXT NOT NULL UNIQUE, PRIMARY KEY(`id`) );
 CREATE TABLE "scan" ( `id` INTEGER NOT NULL UNIQUE, `network_id` INTEGER NOT NULL, `scan_date` TEXT NOT NULL, PRIMARY KEY(`id`) );
