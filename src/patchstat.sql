@@ -46,7 +46,34 @@ SELECT network.network_name,
  WHERE scan_result.scan_id = scan.id
    AND network.id = scan.network_id
    AND vulnerability.id = scan_result.vulnerability_id
-GROUP BY severity
+GROUP BY network_name, scan_date, severity;
+
+-- count all current vulnerabilities by severity
+SELECT network.network_name,
+       vulnerability.severity,
+       count(*)
+  FROM scan, 
+       scan_result,
+       network,
+       vulnerability
+ WHERE scan_result.scan_id = scan.id
+   AND network.id = scan.network_id
+   AND vulnerability.id = scan_result.vulnerability_id
+   AND scan.id = (SELECT MAX(id) FROM scan)
+GROUP BY network_name, severity;
+
+-- count all current and past vulnerabilities by severity
+SELECT network.network_name,
+       vulnerability.severity,
+       count(*)
+  FROM scan, 
+       scan_result,
+       network,
+       vulnerability
+ WHERE scan_result.scan_id = scan.id
+   AND network.id = scan.network_id
+   AND vulnerability.id = scan_result.vulnerability_id
+GROUP BY network_name, severity;
 
 -- load 1/3/17 data
 INSERT INTO scan SELECT null, network.id, '20170103' FROM network WHERE network_name = 'home'
@@ -65,6 +92,24 @@ SELECT scan.id AS scan_id,
    AND vulnerability.id = data.PluginID
    AND scan.network_id = network.id 
    AND scan.scan_date = "20170103"
-   AND network.network_name = "home"
+   AND network.network_name = "home";
 
+-- load 1/4/17 data
+INSERT INTO scan SELECT null, network.id, '20170104' FROM network WHERE network_name = 'home'
+INSERT INTO host SELECT DISTINCT null, Host from data_20170104 where Risk in ('Low', 'Medium', 'High', 'Critical') and host not in (select ip_address from host);
+INSERT OR REPLACE INTO vulnerability SELECT PluginID, Risk, CVE, CVSS from data_20170104 where Risk in ('Low', 'Medium', 'High', 'Critical')
+INSERT OR REPLACE INTO scan_result 
+SELECT scan.id AS scan_id,
+       host.id AS host_id, 
+       vulnerability.id AS vulnerability_id 
+  FROM data_20170104 AS data, 
+       scan,
+       host, 
+       network, 
+       vulnerability 
+ WHERE host.ip_address = data.host
+   AND vulnerability.id = data.PluginID
+   AND scan.network_id = network.id 
+   AND scan.scan_date = "20170104"
+   AND network.network_name = "home";
 
