@@ -67,8 +67,7 @@ GROUP BY severity;
 
 -- count vulnerabilities remediated by severity
 CREATE VIEW vulnerabilities_remediated AS
-    SELECT  A.network_name AS network
-           ,A.severity
+    SELECT  A.severity
            ,A.vulns - COALESCE(B.vulns, 0) AS remediated
       FROM  vulnerabilities_all A LEFT JOIN vulnerabilities_current B 
-        ON (A.network_name = B.network_name AND A.severity = B.severity);
+        ON (A.severity = B.severity);
