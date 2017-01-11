@@ -53,18 +53,17 @@ CREATE VIEW vulnerabilities_all AS
 
 -- count current vulnerabilities by severity
 CREATE VIEW vulnerabilities_current AS
-    SELECT  network.network_name
-           ,vulnerability.severity
-           ,count(*) AS vulns
-      FROM  scan 
-           ,scan_result
-           ,network
-           ,vulnerability
-     WHERE  scan_result.scan_id = scan.id
-       AND  network.id = scan.network_id
-       AND  vulnerability.id = scan_result.vulnerability_id
-       AND  scan.id = (SELECT id FROM scan ORDER BY scan_date DESC LIMIT 1)
-  GROUP BY network_name, severity;
+    SELECT  severity, count(*) AS vulns FROM 
+    (
+      SELECT  host_id
+             ,vulnerability_id
+             ,severity
+        FROM  scan_result
+             ,vulnerability
+       WHERE  scan_result.vulnerability_id = vulnerability.id
+    GROUP BY  host_id, vulnerability_id
+    )
+GROUP BY severity;
 
 -- count vulnerabilities remediated by severity
 CREATE VIEW vulnerabilities_remediated AS
